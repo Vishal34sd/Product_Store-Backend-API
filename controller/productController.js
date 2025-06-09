@@ -29,7 +29,7 @@ const getAllProduct = async (req , res)=>{
 const getProductByID = async(req , res )=>{
     try{
         const fetchID = req.params.id ;
-        const fetchData = await Product.findById(fetchID);
+        const fetchData = await Product.findById(fetchID); //this id is created by mongodb only not productID
         if(fetchData){
             res.status(400).json({
                 success: true,
@@ -54,4 +54,31 @@ const getProductByID = async(req , res )=>{
     }
 }
 
-module.exports = {getAllProduct, getProductByID};
+const addProduct = async (req , res )=>{
+    try{
+        const inputData = req.body ;
+        const addInputData = await Product.create(inputData);
+        if(addInputData){
+            res.status(201).json({
+                success: true,
+                message: "Product added successfully",
+                data: addInputData
+            });
+        }
+        else{
+            res.status(401).json({
+                success : false ,
+                message : "Product could not be added "
+            });
+        }
+    }
+    catch(e){
+        console.error(e);
+        res.status(500).json({
+            success : false ,
+            message : "Something went wrong "
+        });
+    }
+}
+
+module.exports = {getAllProduct, getProductByID, addProduct};
