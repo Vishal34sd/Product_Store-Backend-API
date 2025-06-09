@@ -81,4 +81,35 @@ const addProduct = async (req , res )=>{
     }
 }
 
-module.exports = {getAllProduct, getProductByID, addProduct};
+const updateProductByID = async (req , res )=>{
+    try{
+        const getProductID = req.params.id ;
+        const newData = req.body ;
+        const fetchUpdateProduct = await Product.findByIdAndUpdate(getProductID, 
+            newData,
+            { new: true }
+        );
+        if(fetchUpdateProduct){
+            res.status(200).json({
+                success : true ,
+                message : "Product updated succesfully ",
+                data : fetchUpdateProduct
+            });
+        }
+        else{
+            res.status(401).json({
+                success : false ,
+                message : "No product is found to update "
+            });
+        }
+    }
+    catch(e){
+        console.error(e);
+        res.status(500).json({
+            success : false ,
+            message : "something went wrong "
+        });
+    }
+}
+
+module.exports = {getAllProduct, getProductByID, addProduct, updateProductByID};
