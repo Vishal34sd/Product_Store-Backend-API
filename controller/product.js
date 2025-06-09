@@ -26,4 +26,32 @@ const getAllProduct = async (req , res)=>{
     }
 }
 
-module.exports = {getAllProduct};
+const getProductByID = async(req , res )=>{
+    try{
+        const fetchID = req.params.id ;
+        const fetchData = await Product.findById(fetchID);
+        if(fetchData){
+            res.status(400).json({
+                success: true,
+                message : "Product found successfully",
+                data : fetchData
+
+            });
+        }
+        else{
+            res.status(201).json({
+                success : false ,
+                message : "No product found by ID "
+            });
+        }
+    }
+    catch(e){
+        console.error(e);
+        res.status(500).json({
+            success: false,
+            message: "something went wrong"
+        });
+    }
+}
+
+module.exports = {getAllProduct, getProductByID};
