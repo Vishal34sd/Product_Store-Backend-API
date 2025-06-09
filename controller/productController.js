@@ -92,12 +92,12 @@ const updateProductByID = async (req , res )=>{
         if(fetchUpdateProduct){
             res.status(200).json({
                 success : true ,
-                message : "Product updated succesfully ",
+                message : "Product updated successfully ",
                 data : fetchUpdateProduct
             });
         }
         else{
-            res.status(401).json({
+            res.status(400).json({
                 success : false ,
                 message : "No product is found to update "
             });
@@ -112,4 +112,31 @@ const updateProductByID = async (req , res )=>{
     }
 }
 
-module.exports = {getAllProduct, getProductByID, addProduct, updateProductByID};
+const deleteProductByID = async (req , res )=>{
+    try{
+        const fetchID = req.params.id ;
+        const deleteProduct =  await Product.findByIdAndDelete(fetchID);
+        if(deleteProduct){
+            res.status(200).json({
+                success : true ,
+                message : "Product deleted successfully ",
+                data : deleteProduct
+            });
+        }
+        else{
+            res.status(400).json({
+                success : false ,
+                message : "No product found to delete "
+            });
+        }
+    }
+    catch(e){
+        console.error(e);
+        res.status(500).json({
+            success : false ,
+            message : "something went wrong "
+        });
+    }
+}
+
+module.exports = {getAllProduct, getProductByID, addProduct, updateProductByID, deleteProductByID};
